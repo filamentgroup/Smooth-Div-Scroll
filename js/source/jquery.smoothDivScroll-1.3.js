@@ -1181,6 +1181,172 @@
 						}
 					}
 				},
+
+    autoScrollIntervalPureData: function () {
+			var self = this, el = this.element, o = this.options;
+
+					// If the scroller is not visible or
+					// if the scrollable area is shorter than the scroll wrapper
+					// any running auto scroll interval should stop.
+					if (!($.data(el[0], "visible")) || ($.data(el[0], "scrollableAreaWidth") <= ($.data(el[0], "scrollWrapper").innerWidth()))) {
+						// Stop any running interval
+						clearInterval($.data(el[0], "autoScrollingInterval"));
+						$.data(el[0], "autoScrollingInterval", null);
+
+					}
+					else {
+
+						// Store the old scrollLeft value to see if the scrolling has reached the end
+						$.data(el[0], "previousScrollLeft", $.data(el[0], "scrollWrapper").scrollLeft());
+
+						switch (o.autoScrollingDirection) {
+							case "right":
+
+								$.data(el[0], "scrollWrapper").scrollLeft($.data(el[0], "scrollWrapper").scrollLeft() + o.autoScrollingStep);
+								if ($.data(el[0], "previousScrollLeft") === $.data(el[0], "scrollWrapper").scrollLeft()) {
+									self._trigger("autoScrollingRightLimitReached");
+									clearInterval($.data(el[0], "autoScrollingInterval"));
+									$.data(el[0], "autoScrollingInterval", null);
+									self._trigger("autoScrollingIntervalStopped");
+								}
+								break;
+
+							case "left":
+								$.data(el[0], "scrollWrapper").scrollLeft($.data(el[0], "scrollWrapper").scrollLeft() - o.autoScrollingStep);
+								if ($.data(el[0], "previousScrollLeft") === $.data(el[0], "scrollWrapper").scrollLeft()) {
+									self._trigger("autoScrollingLeftLimitReached");
+									clearInterval($.data(el[0], "autoScrollingInterval"));
+									$.data(el[0], "autoScrollingInterval", null);
+									self._trigger("autoScrollingIntervalStopped");
+								}
+								break;
+
+							case "backAndForth":
+								if ($.data(el[0], "pingPongDirection") === "right") {
+									$.data(el[0], "scrollWrapper").scrollLeft($.data(el[0], "scrollWrapper").scrollLeft() + (o.autoScrollingStep));
+								}
+								else {
+									$.data(el[0], "scrollWrapper").scrollLeft($.data(el[0], "scrollWrapper").scrollLeft() - (o.autoScrollingStep));
+								}
+
+								// If the scrollLeft hasnt't changed it means that the scrolling has reached
+								// the end and the direction should be switched
+								if ($.data(el[0], "previousScrollLeft") === $.data(el[0], "scrollWrapper").scrollLeft()) {
+									if ($.data(el[0], "pingPongDirection") === "right") {
+										$.data(el[0], "pingPongDirection", "left");
+										self._trigger("autoScrollingRightLimitReached");
+									}
+									else {
+										$.data(el[0], "pingPongDirection", "right");
+										self._trigger("autoScrollingLeftLimitReached");
+									}
+								}
+								break;
+
+							case "endlessLoopRight":
+
+								// Do the auto scrolling
+								$.data(el[0], "scrollWrapper").scrollLeft($.data(el[0], "scrollWrapper").scrollLeft() + o.autoScrollingStep);
+
+								self._checkContinuousSwapRight();
+								break;
+							case "endlessLoopLeft":
+
+								// Do the auto scrolling
+								$.data(el[0], "scrollWrapper").scrollLeft($.data(el[0], "scrollWrapper").scrollLeft() - o.autoScrollingStep);
+
+								self._checkContinuousSwapLeft();
+								break;
+							default:
+								break;
+
+						}
+					}
+				},
+
+    autoScrollIntervalSingleRead: function () {
+			var self = this, el = this.element, o = this.options;
+
+      var data = $.data(el[0]);
+
+					// If the scroller is not visible or
+					// if the scrollable area is shorter than the scroll wrapper
+					// any running auto scroll interval should stop.
+					if (!(data["visible"]) || (data["scrollableAreaWidth"] <= (data["scrollWrapper"].innerWidth()))) {
+						// Stop any running interval
+						clearInterval(data["autoScrollingInterval"]);
+						$.data(el[0], "autoScrollingInterval", null);
+
+					}
+					else {
+
+						// Store the old scrollLeft value to see if the scrolling has reached the end
+						$.data(el[0], "previousScrollLeft", data["scrollWrapper"].scrollLeft());
+
+						switch (o.autoScrollingDirection) {
+							case "right":
+
+								data["scrollWrapper"].scrollLeft(data["scrollWrapper"].scrollLeft() + o.autoScrollingStep);
+								if (data["previousScrollLeft"] === data["scrollWrapper"].scrollLeft()) {
+									self._trigger("autoScrollingRightLimitReached");
+									clearInterval(data["autoScrollingInterval"]);
+									$.data(el[0], "autoScrollingInterval", null);
+									self._trigger("autoScrollingIntervalStopped");
+								}
+								break;
+
+							case "left":
+								data["scrollWrapper"].scrollLeft(data["scrollWrapper"].scrollLeft() - o.autoScrollingStep);
+								if (data["previousScrollLeft"] === data["scrollWrapper"].scrollLeft()) {
+									self._trigger("autoScrollingLeftLimitReached");
+									clearInterval(data["autoScrollingInterval"]);
+									$.data(el[0], "autoScrollingInterval", null);
+									self._trigger("autoScrollingIntervalStopped");
+								}
+								break;
+
+							case "backAndForth":
+								if (data["pingPongDirection"] === "right") {
+									data["scrollWrapper"].scrollLeft(data["scrollWrapper"].scrollLeft() + (o.autoScrollingStep));
+								}
+								else {
+									data["scrollWrapper"].scrollLeft(data["scrollWrapper"].scrollLeft() - (o.autoScrollingStep));
+								}
+
+								// If the scrollLeft hasnt't changed it means that the scrolling has reached
+								// the end and the direction should be switched
+								if (data["previousScrollLeft"] === data["scrollWrapper"].scrollLeft()) {
+									if (data["pingPongDirection"] === "right") {
+										$.data(el[0], "pingPongDirection", "left");
+										self._trigger("autoScrollingRightLimitReached");
+									}
+									else {
+										$.data(el[0], "pingPongDirection", "right");
+										self._trigger("autoScrollingLeftLimitReached");
+									}
+								}
+								break;
+
+							case "endlessLoopRight":
+
+								// Do the auto scrolling
+								data["scrollWrapper"].scrollLeft(data["scrollWrapper"].scrollLeft() + o.autoScrollingStep);
+
+								self._checkContinuousSwapRight();
+								break;
+							case "endlessLoopLeft":
+
+								// Do the auto scrolling
+								data["scrollWrapper"].scrollLeft(data["scrollWrapper"].scrollLeft() - o.autoScrollingStep);
+
+								self._checkContinuousSwapLeft();
+								break;
+							default:
+								break;
+
+						}
+					}
+				},
 		/**********************************************************
 		Start Autoscrolling
 		**********************************************************/
