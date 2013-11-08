@@ -18,6 +18,21 @@
     var newScrollLeft, head;
 
     newScrollLeft = this.element.scrollLeft = this.element.scrollLeft + this.distance;
+
+    if( this.element.scrollLeft > (this._head().offsetWidth + 20) ){
+      this._moveHead();
+    }
+  };
+
+  proto._moveHead = function() {
+    var head = this._head();
+
+    this.scrollable.appendChild(head);
+    this.element.scrollLeft = this.element.scrollLeft - head.offsetWidth;
+  };
+
+  proto._head = function() {
+    return this.scrollable.querySelector( "li" );
   };
 
   proto.start = function() {
