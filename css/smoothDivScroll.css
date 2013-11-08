@@ -23,7 +23,7 @@ div.scrollingHotSpotLeft
 /* Visible left hotspot */
 div.scrollingHotSpotLeftVisible
 {
-	background-image: url(../images/arrow_left.gif);				
+	background-image: url(../images/arrow_left.gif);
 	background-color: #fff;
 	background-repeat: no-repeat;
 	opacity: 0.35; /* Standard CSS3 opacity setting */
@@ -62,7 +62,7 @@ div.scrollingHotSpotRightVisible
 /* The scroll wrapper is always the same width and height as the containing element (div).
    Overflow is hidden because you don't want to show all of the scrollable area.
 */
-div.scrollWrapper
+div.scrollWrapper, #heart
 {
 	position: relative;
 	overflow: hidden;
@@ -70,9 +70,20 @@ div.scrollWrapper
 	height: 100%;
 }
 
-div.scrollableArea
+div.scrollableArea, #heart ul
 {
 	position: relative;
 	width: auto;
 	height: 100%;
+}
+
+#heart ul {
+  width: 400%
+}
+
+#heart ul, #heart li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  float: left;
 }

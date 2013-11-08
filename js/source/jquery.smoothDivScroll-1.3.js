@@ -1364,9 +1364,10 @@
 				self._trigger("autoScrollingStarted");
 
 				// Start interval
-				el.data("autoScrollingInterval", setInterval($.proxy(this, 'autoScrollInterval'), o.autoScrollingInterval));
+				el.data("autoScrollingInterval", setInterval($.proxy(this, 'autoScrollIntervalPureData'), o.autoScrollingInterval));
 			}
 		},
+
 		/**********************************************************
 		Check Continuos Swap Right
 		**********************************************************/
