@@ -8,7 +8,8 @@
     this.scrollable = this.element.querySelector( "ul" );
 
     // store the value, less repainting
-    this.currentScrollLeft = this.scrollable.scrollLeft;
+    this.currentScrollLeft = this.scrollable.style.marginLeft || 0;
+
     this.headWidth = this._head().offsetWidth;
 
     if( options.start ) {
@@ -22,12 +23,12 @@
     var newScrollLeft, head;
 
     // increment the current scroll appropriately
-    this._setScrollLeft( this.currentScrollLeft + this.distance );
+    this._setScrollLeft( this.currentScrollLeft - this.distance );
 
     // if the current scrolling value is larger than the stored width
     // for the head of the list by a small buffer, move the out of view
     // head to the tail of the list
-    if( this.currentScrollLeft > this.headWidth + 20 ) {
+    if( this.currentScrollLeft < -this.headWidth - 20 ) {
       this._moveHead();
     }
   };
@@ -39,14 +40,15 @@
     this.scrollable.appendChild(head);
 
     // make sure the scroll left accounts for the movement of the scrolling
-    this._setScrollLeft( this.currentScrollLeft - head.offsetWidth );
+    this._setScrollLeft( this.currentScrollLeft + head.offsetWidth );
 
     // set the new head of the list
     this.headWidth = this._head().offsetWidth;
   };
 
   proto._setScrollLeft = function( value ) {
-    this.currentScrollLeft = this.element.scrollLeft = value;
+    this.currentScrollLeft = value;
+    this.scrollable.style.marginLeft = value + "px";
   };
 
   proto._head = function() {
