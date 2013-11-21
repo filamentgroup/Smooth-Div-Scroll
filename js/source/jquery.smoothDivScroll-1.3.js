@@ -85,93 +85,99 @@
 
 			// Create variables for any existing or not existing 
 			// scroller elements on the page.
-			el.data("scrollWrapper", el.find("." + o.scrollWrapperClass));
-			el.data("scrollingHotSpotRight", el.find("." + o.scrollingHotSpotRightClass));
-			el.data("scrollingHotSpotLeft", el.find("." + o.scrollingHotSpotLeftClass));
-			el.data("scrollableArea", el.find("." + o.scrollableAreaClass));
+			$.data(el, {
+				"scrollWrapper": el.find("." + o.scrollWrapperClass),
+				"scrollingHotSpotRight": el.find("." + o.scrollingHotSpotRightClass),
+				"scrollingHotSpotLeft": el.find("." + o.scrollingHotSpotLeftClass),
+				"scrollableArea": el.find("." + o.scrollableAreaClass)
+			});
 
 			// Check which elements are already present on the page. 
 			// Create any elements needed by the plugin if
 			// the user hasn't already created them.
 
 			// First detach any present hot spots
-			if (el.data("scrollingHotSpotRight").length > 0) {
+			if ($.data(el, "scrollingHotSpotRight").length > 0) {
 
-				el.data("scrollingHotSpotRight").detach();
+				$.data(el, "scrollingHotSpotRight").detach();
 			}
-			if (el.data("scrollingHotSpotLeft").length > 0) {
+			if ($.data(el, "scrollingHotSpotLeft").length > 0) {
 
-				el.data("scrollingHotSpotLeft").detach();
+				$.data(el, "scrollingHotSpotLeft").detach();
 			}
 
 			// Both the scrollable area and the wrapper are missing
-			if (el.data("scrollableArea").length === 0 && el.data("scrollWrapper").length === 0) {
+			if ($.data(el, "scrollableArea").length === 0 && $.data(el, "scrollWrapper").length === 0) {
 				el.wrapInner("<div class='" + o.scrollableAreaClass + "'>").wrapInner("<div class='" + o.scrollWrapperClass + "'>");
 
-				el.data("scrollWrapper", el.find("." + o.scrollWrapperClass));
-				el.data("scrollableArea", el.find("." + o.scrollableAreaClass));
+				$.data(el, {
+					"scrollWrapper": el.find("." + o.scrollWrapperClass),
+					"scrollableArea": el.find("." + o.scrollableAreaClass)
+				});
 			}
 			// Only the wrapper is missing
-			else if (el.data("scrollWrapper").length === 0) {
+			else if ($.data(el, "scrollWrapper").length === 0) {
 				el.wrapInner("<div class='" + o.scrollWrapperClass + "'>");
-				el.data("scrollWrapper", el.find("." + o.scrollWrapperClass));
+				$.data(el, "scrollWrapper", el.find("." + o.scrollWrapperClass));
 			}
 			// Only the scrollable area is missing
-			else if (el.data("scrollableArea").length === 0) {
-				el.data("scrollWrapper").wrapInner("<div class='" + o.scrollableAreaClass + "'>");
-				el.data("scrollableArea", el.find("." + o.scrollableAreaClass));
+			else if ($.data(el, "scrollableArea").length === 0) {
+				$.data(el, "scrollWrapper").wrapInner("<div class='" + o.scrollableAreaClass + "'>");
+				$.data(el, "scrollableArea", el.find("." + o.scrollableAreaClass));
 			}
 
 			// Put the right and left hot spot back into the scroller again
 			// or create them if they where not present from the beginning.
-			if (el.data("scrollingHotSpotRight").length === 0) {
+			if ($.data(el, "scrollingHotSpotRight").length === 0) {
 				el.prepend("<div class='" + o.scrollingHotSpotRightClass + "'></div>");
-				el.data("scrollingHotSpotRight", el.find("." + o.scrollingHotSpotRightClass));
+				$.data(el, "scrollingHotSpotRight", el.find("." + o.scrollingHotSpotRightClass));
 			} else {
-				el.prepend(el.data("scrollingHotSpotRight"));
+				el.prepend($.data(el, "scrollingHotSpotRight"));
 			}
 
-			if (el.data("scrollingHotSpotLeft").length === 0) {
+			if ($.data(el, "scrollingHotSpotLeft").length === 0) {
 				el.prepend("<div class='" + o.scrollingHotSpotLeftClass + "'></div>");
-				el.data("scrollingHotSpotLeft", el.find("." + o.scrollingHotSpotLeftClass));
+				$.data(el, "scrollingHotSpotLeft", el.find("." + o.scrollingHotSpotLeftClass));
 			} else {
-				el.prepend(el.data("scrollingHotSpotLeft"));
+				el.prepend($.data(el, "scrollingHotSpotLeft"));
 			}
 
 
 			// Create variables in the element data storage
-			el.data("speedBooster", 1);
-			el.data("scrollXPos", 0);
-			el.data("hotSpotWidth", el.data("scrollingHotSpotLeft").innerWidth());
-			el.data("scrollableAreaWidth", 0);
-			el.data("startingPosition", 0);
-			el.data("rightScrollingInterval", null);
-			el.data("leftScrollingInterval", null);
-			el.data("autoScrollingInterval", null);
-			el.data("hideHotSpotBackgroundsInterval", null);
-			el.data("previousScrollLeft", 0);
-			el.data("pingPongDirection", "right");
-			el.data("getNextElementWidth", true);
-			el.data("swapAt", null);
-			el.data("startAtElementHasNotPassed", true);
-			el.data("swappedElement", null);
-			el.data("originalElements", el.data("scrollableArea").children(o.countOnlyClass));
-			el.data("visible", true);
-			el.data("enabled", true);
-			el.data("scrollableAreaHeight", el.data("scrollableArea").height());
-			el.data("scrollerOffset", el.offset());
+			$.data(el, {
+				"speedBooster": 1,
+				"scrollXPos": 0,
+				"hotSpotWidth": $.data(el, "scrollingHotSpotLeft").innerWidth(),
+				"scrollableAreaWidth": 0,
+				"startingPosition": 0,
+				"rightScrollingInterval": null,
+				"leftScrollingInterval": null,
+				"autoScrollingInterval": null,
+				"hideHotSpotBackgroundsInterval": null,
+				"previousScrollLeft": 0,
+				"pingPongDirection": "right",
+				"getNextElementWidth": true,
+				"swapAt": null,
+				"startAtElementHasNotPassed": true,
+				"swappedElement": null,
+				"originalElements": $.data(el, "scrollableArea").children(o.countOnlyClass),
+				"visible": true,
+				"enabled": true,
+				"scrollableAreaHeight": $.data(el, "scrollableArea").height(),
+				"scrollerOffset": el.offset()
+			});
 
 			/*****************************************
 			SET UP EVENTS FOR TOUCH SCROLLING
 			*****************************************/
-			if (o.touchScrolling && el.data("enabled")) {
+			if (o.touchScrolling && $.data(el, "enabled")) {
 				// Use jquery.kinetic.js for touch scrolling
 				// Vertical scrolling disabled
-				el.data("scrollWrapper").kinetic({
+				$.data(el, "scrollWrapper").kinetic({
 					y: false,
 					moved: function (settings) {
 						if (o.manualContinuousScrolling) {
-							if (el.data("scrollWrapper").scrollLeft() <= 0) {
+							if ($.data(el, "scrollWrapper").scrollLeft() <= 0) {
 								self._checkContinuousSwapLeft();
 							} else {
 								self._checkContinuousSwapRight();
@@ -183,7 +189,7 @@
 					},
 					stopped: function (settings) {
 						// Stop any ongoing animations
-						el.data("scrollWrapper").stop(true, false);
+						$.data(el, "scrollWrapper").stop(true, false);
 
 						// Stop any ongoing auto scrolling
 						self.stopAutoScrolling();
@@ -199,31 +205,31 @@
 			*****************************************/
 			// Check the mouse X position and calculate 
 			// the relative X position inside the right hotspot
-			el.data("scrollingHotSpotRight").bind("mousemove", function (e) {
+			$.data(el, "scrollingHotSpotRight").bind("mousemove", function (e) {
 				if (o.hotSpotScrolling) {
-					var x = e.pageX - (this.offsetLeft + el.data("scrollerOffset").left);
-					el.data("scrollXPos", Math.round((x / el.data("hotSpotWidth")) * o.hotSpotScrollingStep));
+					var x = e.pageX - (this.offsetLeft + $.data(el, "scrollerOffset").left);
+					$.data(el, "scrollXPos", Math.round((x / $.data(el, "hotSpotWidth")) * o.hotSpotScrollingStep));
 
 					// If the position is less then 1, it's set to 1
-					if (el.data("scrollXPos") === Infinity || el.data("scrollXPos") < 1) {
-						el.data("scrollXPos", 1);
+					if ($.data(el, "scrollXPos") === Infinity || $.data(el, "scrollXPos") < 1) {
+						$.data(el, "scrollXPos", 1);
 					}
 				}
 			});
 
 			// Mouseover right hotspot - scrolling
-			el.data("scrollingHotSpotRight").bind("mouseover", function () {
+			$.data(el, "scrollingHotSpotRight").bind("mouseover", function () {
 				if (o.hotSpotScrolling) {
 					// Stop any ongoing animations
-					el.data("scrollWrapper").stop(true, false);
+					$.data(el, "scrollWrapper").stop(true, false);
 
 					// Stop any ongoing auto scrolling
 					self.stopAutoScrolling();
 
 					// Start the scrolling interval
-					el.data("rightScrollingInterval", setInterval(function () {
-						if (el.data("scrollXPos") > 0 && el.data("enabled")) {
-							el.data("scrollWrapper").scrollLeft(el.data("scrollWrapper").scrollLeft() + (el.data("scrollXPos") * el.data("speedBooster")));
+					$.data(el, "rightScrollingInterval", setInterval(function () {
+						if ($.data(el, "scrollXPos") > 0 && $.data(el, "enabled")) {
+							$.data(el, "scrollWrapper").scrollLeft($.data(el, "scrollWrapper").scrollLeft() + ($.data(el, "scrollXPos") * $.data(el, "speedBooster")));
 
 							if (o.manualContinuousScrolling) {
 								self._checkContinuousSwapRight();
@@ -239,27 +245,27 @@
 			});
 
 			// Mouseout right hotspot - stop scrolling
-			el.data("scrollingHotSpotRight").bind("mouseout", function () {
+			$.data(el, "scrollingHotSpotRight").bind("mouseout", function () {
 				if (o.hotSpotScrolling) {
-					clearInterval(el.data("rightScrollingInterval"));
-					el.data("scrollXPos", 0);
+					clearInterval($.data(el, "rightScrollingInterval"));
+					$.data(el, "scrollXPos", 0);
 
 					// Easing out after scrolling
-					if (o.easingAfterHotSpotScrolling && el.data("enabled")) {
-						el.data("scrollWrapper").animate({ scrollLeft: el.data("scrollWrapper").scrollLeft() + o.easingAfterHotSpotScrollingDistance }, { duration: o.easingAfterHotSpotScrollingDuration, easing: o.easingAfterHotSpotScrollingFunction });
+					if (o.easingAfterHotSpotScrolling && $.data(el, "enabled")) {
+						$.data(el, "scrollWrapper").animate({ scrollLeft: $.data(el, "scrollWrapper").scrollLeft() + o.easingAfterHotSpotScrollingDistance }, { duration: o.easingAfterHotSpotScrollingDuration, easing: o.easingAfterHotSpotScrollingFunction });
 					}
 				}
 			});
 
 
 			// mousedown right hotspot (add scrolling speed booster)
-			el.data("scrollingHotSpotRight").bind("mousedown", function () {
-				el.data("speedBooster", o.hotSpotMouseDownSpeedBooster);
+			$.data(el, "scrollingHotSpotRight").bind("mousedown", function () {
+				$.data(el, "speedBooster", o.hotSpotMouseDownSpeedBooster);
 			});
 
 			// mouseup anywhere (stop boosting the scrolling speed)
 			$("body").bind("mouseup", function () {
-				el.data("speedBooster", 1);
+				$.data(el, "speedBooster", 1);
 			});
 
 			/*****************************************
@@ -267,31 +273,31 @@
 			*****************************************/
 			// Check the mouse X position and calculate
 			// the relative X position inside the left hotspot
-			el.data("scrollingHotSpotLeft").bind("mousemove", function (e) {
+			$.data(el, "scrollingHotSpotLeft").bind("mousemove", function (e) {
 				if (o.hotSpotScrolling) {
-					var x = ((this.offsetLeft + el.data("scrollerOffset").left + el.data("hotSpotWidth")) - e.pageX);
+					var x = ((this.offsetLeft + $.data(el, "scrollerOffset").left + $.data(el, "hotSpotWidth")) - e.pageX);
 
-					el.data("scrollXPos", Math.round((x / el.data("hotSpotWidth")) * o.hotSpotScrollingStep));
+					$.data(el, "scrollXPos", Math.round((x / $.data(el, "hotSpotWidth")) * o.hotSpotScrollingStep));
 
 					// If the position is less then 1, it's set to 1
-					if (el.data("scrollXPos") === Infinity || el.data("scrollXPos") < 1) {
-						el.data("scrollXPos", 1);
+					if ($.data(el, "scrollXPos") === Infinity || $.data(el, "scrollXPos") < 1) {
+						$.data(el, "scrollXPos", 1);
 					}
 				}
 			});
 
 			// Mouseover left hotspot
-			el.data("scrollingHotSpotLeft").bind("mouseover", function () {
+			$.data(el, "scrollingHotSpotLeft").bind("mouseover", function () {
 				if (o.hotSpotScrolling) {
 					// Stop any ongoing animations
-					el.data("scrollWrapper").stop(true, false);
+					$.data(el, "scrollWrapper").stop(true, false);
 
 					// Stop any ongoing auto scrolling
 					self.stopAutoScrolling();
 
-					el.data("leftScrollingInterval", setInterval(function () {
-						if (el.data("scrollXPos") > 0 && el.data("enabled")) {
-							el.data("scrollWrapper").scrollLeft(el.data("scrollWrapper").scrollLeft() - (el.data("scrollXPos") * el.data("speedBooster")));
+					$.data(el, "leftScrollingInterval", setInterval(function () {
+						if ($.data(el, "scrollXPos") > 0 && $.data(el, "enabled")) {
+							$.data(el, "scrollWrapper").scrollLeft($.data(el, "scrollWrapper").scrollLeft() - ($.data(el, "scrollXPos") * $.data(el, "speedBooster")));
 
 							if (o.manualContinuousScrolling) {
 								self._checkContinuousSwapLeft();
@@ -307,29 +313,29 @@
 			});
 
 			// mouseout left hotspot
-			el.data("scrollingHotSpotLeft").bind("mouseout", function () {
+			$.data(el, "scrollingHotSpotLeft").bind("mouseout", function () {
 				if (o.hotSpotScrolling) {
-					clearInterval(el.data("leftScrollingInterval"));
-					el.data("scrollXPos", 0);
+					clearInterval($.data(el, "leftScrollingInterval"));
+					$.data(el, "scrollXPos", 0);
 
 					// Easing out after scrolling
-					if (o.easingAfterHotSpotScrolling && el.data("enabled")) {
-						el.data("scrollWrapper").animate({ scrollLeft: el.data("scrollWrapper").scrollLeft() - o.easingAfterHotSpotScrollingDistance }, { duration: o.easingAfterHotSpotScrollingDuration, easing: o.easingAfterHotSpotScrollingFunction });
+					if (o.easingAfterHotSpotScrolling && $.data(el, "enabled")) {
+						$.data(el, "scrollWrapper").animate({ scrollLeft: $.data(el, "scrollWrapper").scrollLeft() - o.easingAfterHotSpotScrollingDistance }, { duration: o.easingAfterHotSpotScrollingDuration, easing: o.easingAfterHotSpotScrollingFunction });
 					}
 				}
 			});
 
 			// mousedown left hotspot (add scrolling speed booster)
-			el.data("scrollingHotSpotLeft").bind("mousedown", function () {
-				el.data("speedBooster", o.hotSpotMouseDownSpeedBooster);
+			$.data(el, "scrollingHotSpotLeft").bind("mousedown", function () {
+				$.data(el, "speedBooster", o.hotSpotMouseDownSpeedBooster);
 			});
 
 			/*****************************************
 			SET UP EVENT FOR MOUSEWHEEL SCROLLING
 			*****************************************/
-			el.data("scrollableArea").mousewheel(function (event, delta, deltaX, deltaY) {
+			$.data(el, "scrollableArea").mousewheel(function (event, delta, deltaX, deltaY) {
 
-				if (el.data("enabled") && o.mousewheelScrolling.length > 0) {
+				if ($.data(el, "enabled") && o.mousewheelScrolling.length > 0) {
 					var pixels;
 
 					// Can be either positive or negative
@@ -362,7 +368,7 @@
 			// Capture and disable mousewheel events when the pointer
 			// is over any of the hotspots
 			if (o.mousewheelScrolling) {
-				el.data("scrollingHotSpotLeft").add(el.data("scrollingHotSpotRight")).mousewheel(function (event) {
+				$.data(el, "scrollingHotSpotLeft").add($.data(el, "scrollingHotSpotRight")).mousewheel(function (event) {
 					event.preventDefault();
 				});
 			}
@@ -420,7 +426,7 @@
 							break;
 						case "onStart":
 							self.showHotSpotBackgrounds();
-							el.data("hideHotSpotBackgroundsInterval", setTimeout(function () {
+							$.data(el, "hideHotSpotBackgroundsInterval", setTimeout(function () {
 								self.hideHotSpotBackgrounds(250);
 							}, o.hotSpotsVisibleTime));
 							break;
@@ -463,8 +469,8 @@
 				if (value === true) {
 					self._showHideHotSpots();
 				} else {
-					el.data("scrollingHotSpotLeft").hide();
-					el.data("scrollingHotSpotRight").hide();
+					$.data(el, "scrollingHotSpotLeft").hide();
+					$.data(el, "scrollingHotSpotRight").hide();
 				}
 			} else if (key === "autoScrollingStep" ||
 			// Make sure that certain values are integers, otherwise
@@ -493,24 +499,24 @@
 			// Fade in the hotspot backgrounds
 			if (fadeSpeed !== undefined) {
 				// Before the fade-in starts, we need to make sure the opacity is zero
-				//el.data("scrollingHotSpotLeft").add(el.data("scrollingHotSpotRight")).css("opacity", "0.0");
+				//$.data(el, "scrollingHotSpotLeft").add($.data(el, "scrollingHotSpotRight")).css("opacity", "0.0");
 
-				el.data("scrollingHotSpotLeft").addClass(o.scrollingHotSpotLeftVisibleClass);
-				el.data("scrollingHotSpotRight").addClass(o.scrollingHotSpotRightVisibleClass);
+				$.data(el, "scrollingHotSpotLeft").addClass(o.scrollingHotSpotLeftVisibleClass);
+				$.data(el, "scrollingHotSpotRight").addClass(o.scrollingHotSpotRightVisibleClass);
 
 				// Fade in the hotspots
-				el.data("scrollingHotSpotLeft").add(el.data("scrollingHotSpotRight")).fadeTo(fadeSpeed, 0.35);
+				$.data(el, "scrollingHotSpotLeft").add($.data(el, "scrollingHotSpotRight")).fadeTo(fadeSpeed, 0.35);
 			}
 			// Don't fade, just show them
 			else {
 
 				// The left hotspot
-				el.data("scrollingHotSpotLeft").addClass(o.scrollingHotSpotLeftVisibleClass);
-				el.data("scrollingHotSpotLeft").removeAttr("style");
+				$.data(el, "scrollingHotSpotLeft").addClass(o.scrollingHotSpotLeftVisibleClass);
+				$.data(el, "scrollingHotSpotLeft").removeAttr("style");
 
 				// The right hotspot
-				el.data("scrollingHotSpotRight").addClass(o.scrollingHotSpotRightVisibleClass);
-				el.data("scrollingHotSpotRight").removeAttr("style");
+				$.data(el, "scrollingHotSpotRight").addClass(o.scrollingHotSpotRightVisibleClass);
+				$.data(el, "scrollingHotSpotRight").removeAttr("style");
 			}
 
 			self._showHideHotSpots();
@@ -523,20 +529,20 @@
 			if (fadeSpeed !== undefined) {
 
 				// Fade out the left hotspot
-				el.data("scrollingHotSpotLeft").fadeTo(fadeSpeed, 0.0, function () {
-					el.data("scrollingHotSpotLeft").removeClass(o.scrollingHotSpotLeftVisibleClass);
+				$.data(el, "scrollingHotSpotLeft").fadeTo(fadeSpeed, 0.0, function () {
+					$.data(el, "scrollingHotSpotLeft").removeClass(o.scrollingHotSpotLeftVisibleClass);
 				});
 
 				// Fade out the right hotspot
-				el.data("scrollingHotSpotRight").fadeTo(fadeSpeed, 0.0, function () {
-					el.data("scrollingHotSpotRight").removeClass(o.scrollingHotSpotRightVisibleClass);
+				$.data(el, "scrollingHotSpotRight").fadeTo(fadeSpeed, 0.0, function () {
+					$.data(el, "scrollingHotSpotRight").removeClass(o.scrollingHotSpotRightVisibleClass);
 				});
 
 			}
 			// Don't fade, just hide them
 			else {
-				el.data("scrollingHotSpotLeft").removeClass(o.scrollingHotSpotLeftVisibleClass).removeAttr("style");
-				el.data("scrollingHotSpotRight").removeClass(o.scrollingHotSpotRightVisibleClass).removeAttr("style");
+				$.data(el, "scrollingHotSpotLeft").removeClass(o.scrollingHotSpotLeftVisibleClass).removeAttr("style");
+				$.data(el, "scrollingHotSpotRight").removeClass(o.scrollingHotSpotRightVisibleClass).removeAttr("style");
 			}
 
 		},
@@ -547,58 +553,58 @@
 
 			// Hot spot scrolling is not enabled so show no hot spots
 			if (!(o.hotSpotScrolling)) {
-				el.data("scrollingHotSpotLeft").hide();
-				el.data("scrollingHotSpotRight").hide();
+				$.data(el, "scrollingHotSpotLeft").hide();
+				$.data(el, "scrollingHotSpotRight").hide();
 			} else {
 
 				// If the manual continuous scrolling option is set show both
 				if (o.manualContinuousScrolling && o.hotSpotScrolling && o.autoScrollingMode !== "always") {
-					el.data("scrollingHotSpotLeft").show();
-					el.data("scrollingHotSpotRight").show();
+					$.data(el, "scrollingHotSpotLeft").show();
+					$.data(el, "scrollingHotSpotRight").show();
 				}
 				// Autoscrolling not set to always and hotspot scrolling enabled.
 				// Regular hot spot scrolling.
 				else if (o.autoScrollingMode !== "always" && o.hotSpotScrolling) {
 					// If the scrollable area is shorter than the scroll wrapper, both hotspots
 					// should be hidden
-					if (el.data("scrollableAreaWidth") <= (el.data("scrollWrapper").innerWidth())) {
-						el.data("scrollingHotSpotLeft").hide();
-						el.data("scrollingHotSpotRight").hide();
+					if ($.data(el, "scrollableAreaWidth") <= ($.data(el, "scrollWrapper").innerWidth())) {
+						$.data(el, "scrollingHotSpotLeft").hide();
+						$.data(el, "scrollingHotSpotRight").hide();
 					}
 					// When you can't scroll further left the left scroll hotspot should be hidden
 					// and the right hotspot visible.
-					else if (el.data("scrollWrapper").scrollLeft() === 0) {
-						el.data("scrollingHotSpotLeft").hide();
-						el.data("scrollingHotSpotRight").show();
+					else if ($.data(el, "scrollWrapper").scrollLeft() === 0) {
+						$.data(el, "scrollingHotSpotLeft").hide();
+						$.data(el, "scrollingHotSpotRight").show();
 						// Callback
 						self._trigger("scrollerLeftLimitReached");
 						// Clear interval
-						clearInterval(el.data("leftScrollingInterval"));
-						el.data("leftScrollingInterval", null);
+						clearInterval($.data(el, "leftScrollingInterval"));
+						$.data(el, "leftScrollingInterval", null);
 					}
 					// When you can't scroll further right
 					// the right scroll hotspot should be hidden
 					// and the left hotspot visible
-					else if (el.data("scrollableAreaWidth") <= (el.data("scrollWrapper").innerWidth() + el.data("scrollWrapper").scrollLeft())) {
-						el.data("scrollingHotSpotLeft").show();
-						el.data("scrollingHotSpotRight").hide();
+					else if ($.data(el, "scrollableAreaWidth") <= ($.data(el, "scrollWrapper").innerWidth() + $.data(el, "scrollWrapper").scrollLeft())) {
+						$.data(el, "scrollingHotSpotLeft").show();
+						$.data(el, "scrollingHotSpotRight").hide();
 						// Callback
 						self._trigger("scrollerRightLimitReached");
 						// Clear interval
-						clearInterval(el.data("rightScrollingInterval"));
-						el.data("rightScrollingInterval", null);
+						clearInterval($.data(el, "rightScrollingInterval"));
+						$.data(el, "rightScrollingInterval", null);
 					}
 					// If you are somewhere in the middle of your
 					// scrolling, both hotspots should be visible
 					else {
-						el.data("scrollingHotSpotLeft").show();
-						el.data("scrollingHotSpotRight").show();
+						$.data(el, "scrollingHotSpotLeft").show();
+						$.data(el, "scrollingHotSpotRight").show();
 					}
 				}
 				// If auto scrolling is set to always, there should be no hotspots
 				else {
-					el.data("scrollingHotSpotLeft").hide();
-					el.data("scrollingHotSpotRight").hide();
+					$.data(el, "scrollingHotSpotLeft").hide();
+					$.data(el, "scrollingHotSpotRight").hide();
 				}
 			}
 
@@ -611,36 +617,36 @@
 
 			switch (method) {
 				case "first":
-					el.data("scrollXPos", 0);
+					$.data(el, "scrollXPos", 0);
 					return true;
 				case "start":
 					// Check to see if there is a specified start element in the options 
 					// and that the element exists in the DOM
 					if (o.startAtElementId !== "") {
-						if (el.data("scrollableArea").has("#" + o.startAtElementId)) {
+						if ($.data(el, "scrollableArea").has("#" + o.startAtElementId)) {
 							tempScrollPosition = $("#" + o.startAtElementId).position().left;
-							el.data("scrollXPos", tempScrollPosition);
+							$.data(el, "scrollXPos", tempScrollPosition);
 							return true;
 						}
 					}
 					return false;
 				case "last":
-					el.data("scrollXPos", (el.data("scrollableAreaWidth") - el.data("scrollWrapper").innerWidth()));
+					$.data(el, "scrollXPos", ($.data(el, "scrollableAreaWidth") - $.data(el, "scrollWrapper").innerWidth()));
 					return true;
 				case "number":
 					// Check to see that an element number is passed
 					if (!(isNaN(element))) {
-						tempScrollPosition = el.data("scrollableArea").children(o.countOnlyClass).eq(element - 1).position().left;
-						el.data("scrollXPos", tempScrollPosition);
+						tempScrollPosition = $.data(el, "scrollableArea").children(o.countOnlyClass).eq(element - 1).position().left;
+						$.data(el, "scrollXPos", tempScrollPosition);
 						return true;
 					}
 					return false;
 				case "id":
 					// Check that an element id is passed and that the element exists in the DOM
 					if (element.length > 0) {
-						if (el.data("scrollableArea").has("#" + element)) {
+						if ($.data(el, "scrollableArea").has("#" + element)) {
 							tempScrollPosition = $("#" + element).position().left;
-							el.data("scrollXPos", tempScrollPosition);
+							$.data(el, "scrollXPos", tempScrollPosition);
 							return true;
 						}
 					}
@@ -658,11 +664,11 @@
 			var self = this, el = this.element;
 
 			// Check to see that the scroller is enabled
-			if (el.data("enabled")) {
+			if ($.data(el, "enabled")) {
 				// Get the position of the element to scroll to
 				if (self._setElementScrollPosition(jumpTo, element)) {
 					// Jump to the element
-					el.data("scrollWrapper").scrollLeft(el.data("scrollXPos"));
+					$.data(el, "scrollWrapper").scrollLeft($.data(el, "scrollXPos"));
 					// Check the hotspots
 					self._showHideHotSpots();
 					// Trigger the right callback
@@ -695,22 +701,22 @@
 		scrollToElement: function (scrollTo, element) {
 			var self = this, el = this.element, o = this.options, autoscrollingWasRunning = false;
 
-			if (el.data("enabled")) {
+			if ($.data(el, "enabled")) {
 				// Get the position of the element to scroll to
 				if (self._setElementScrollPosition(scrollTo, element)) {
 					// Stop any ongoing auto scrolling
-					if (el.data("autoScrollingInterval") !== null) {
+					if ($.data(el, "autoScrollingInterval") !== null) {
 						self.stopAutoScrolling();
 						autoscrollingWasRunning = true;
 					}
 
 					// Stop any other running animations
 					// (clear queue but don't jump to the end)
-					el.data("scrollWrapper").stop(true, false);
+					$.data(el, "scrollWrapper").stop(true, false);
 
 					// Do the scolling animation
-					el.data("scrollWrapper").animate({
-						scrollLeft: el.data("scrollXPos")
+					$.data(el, "scrollWrapper").animate({
+						scrollLeft: $.data(el, "scrollXPos")
 					}, { duration: o.scrollToAnimationDuration, easing: o.scrollToEasingFunction, complete: function () {
 						// If auto scrolling was running before, start it again
 						if (autoscrollingWasRunning) {
@@ -748,46 +754,46 @@
 		move: function (pixels) {
 			var self = this, el = this.element, o = this.options;
 			// clear queue, move to end
-			el.data("scrollWrapper").stop(true, true);
+			$.data(el, "scrollWrapper").stop(true, true);
 
 			// Only run this code if it's possible to scroll left or right,
-			if ((pixels < 0 && el.data("scrollWrapper").scrollLeft() > 0) || (pixels > 0 && el.data("scrollableAreaWidth") > (el.data("scrollWrapper").innerWidth() + el.data("scrollWrapper").scrollLeft())) || o.manualContinuousScrolling ) {
+			if ((pixels < 0 && $.data(el, "scrollWrapper").scrollLeft() > 0) || (pixels > 0 && $.data(el, "scrollableAreaWidth") > ($.data(el, "scrollWrapper").innerWidth() + $.data(el, "scrollWrapper").scrollLeft())) || o.manualContinuousScrolling ) {
 
-        var scrollLength = el.data("scrollableArea").width() - el.data("scrollWrapper").width();
-        var sOffset = el.data("scrollWrapper").scrollLeft() + pixels;
+        var scrollLength = $.data(el, "scrollableArea").width() - $.data(el, "scrollWrapper").width();
+        var sOffset = $.data(el, "scrollWrapper").scrollLeft() + pixels;
 
         if( sOffset < 0 ) { // Swap last element to be the first one if scroll out of the left edge of view
                 
             function forceSwapElementLeft(){
-              el.data("swappedElement", el.data("scrollableArea").children(":last").detach());
-              el.data("scrollableArea").prepend(el.data("swappedElement"));
-              el.data("scrollWrapper").scrollLeft(el.data("scrollWrapper").scrollLeft() + el.data("swappedElement").outerWidth(true));              
+              $.data(el, "swappedElement", $.data(el, "scrollableArea").children(":last").detach());
+              $.data(el, "scrollableArea").prepend($.data(el, "swappedElement"));
+              $.data(el, "scrollWrapper").scrollLeft($.data(el, "scrollWrapper").scrollLeft() + $.data(el, "swappedElement").outerWidth(true));              
             }
             
             while(sOffset < 0 ){ // keep swap elements left until it has enough length for scrolling left
               forceSwapElementLeft();
-              sOffset = el.data("scrollableArea").children(":first").outerWidth(true) + sOffset;                   
+              sOffset = $.data(el, "scrollableArea").children(":first").outerWidth(true) + sOffset;                   
             }
 
         } else if( sOffset - scrollLength > 0 ){ // Swap the first element to be the last one if scroll out of the right edge of view
            
           function forceSwapElementRight(){            
-            el.data("swappedElement", el.data("scrollableArea").children(":first").detach());
-            el.data("scrollableArea").append(el.data("swappedElement"));
-            var wrapperLeft = el.data("scrollWrapper").scrollLeft();
-            el.data("scrollWrapper").scrollLeft(wrapperLeft - el.data("swappedElement").outerWidth(true));            
+            $.data(el, "swappedElement", $.data(el, "scrollableArea").children(":first").detach());
+            $.data(el, "scrollableArea").append($.data(el, "swappedElement"));
+            var wrapperLeft = $.data(el, "scrollWrapper").scrollLeft();
+            $.data(el, "scrollWrapper").scrollLeft(wrapperLeft - $.data(el, "swappedElement").outerWidth(true));            
           }
           
           while( sOffset - scrollLength > 0 ){ // keep swap elements right until it has enough length for scrolling right
             forceSwapElementRight();
-            sOffset = sOffset - el.data("scrollableArea").children(":last").outerWidth(true);              
+            sOffset = sOffset - $.data(el, "scrollableArea").children(":last").outerWidth(true);              
           }
           
         }
           
 				if (o.easingAfterMouseWheelScrolling) {
         
-          el.data("scrollWrapper").animate({ scrollLeft: el.data("scrollWrapper").scrollLeft() + pixels }, { duration: o.easingAfterMouseWheelScrollingDuration, easing: o.easingAfterMouseWheelFunction, complete: function () {
+          $.data(el, "scrollWrapper").animate({ scrollLeft: $.data(el, "scrollWrapper").scrollLeft() + pixels }, { duration: o.easingAfterMouseWheelScrollingDuration, easing: o.easingAfterMouseWheelFunction, complete: function () {
             self._showHideHotSpots();
             if (o.manualContinuousScrolling) {
               if (pixels > 0) {
@@ -800,7 +806,7 @@
           });
           
 				} else {
-					el.data("scrollWrapper").scrollLeft(el.data("scrollWrapper").scrollLeft() + pixels);
+					$.data(el, "scrollWrapper").scrollLeft($.data(el, "scrollWrapper").scrollLeft() + pixels);
 					self._showHideHotSpots();
 
 					if (o.manualContinuousScrolling) {
@@ -843,15 +849,15 @@
 
 				// Determine a plausible starting value for the
 				// image height
-				if (el.data("scrollableAreaHeight") <= 75) {
+				if ($.data(el, "scrollableAreaHeight") <= 75) {
 					startingIndex = 0;
-				} else if (el.data("scrollableAreaHeight") <= 100) {
+				} else if ($.data(el, "scrollableAreaHeight") <= 100) {
 					startingIndex = 1;
-				} else if (el.data("scrollableAreaHeight") <= 240) {
+				} else if ($.data(el, "scrollableAreaHeight") <= 240) {
 					startingIndex = 2;
-				} else if (el.data("scrollableAreaHeight") <= 500) {
+				} else if ($.data(el, "scrollableAreaHeight") <= 500) {
 					startingIndex = 3;
-				} else if (el.data("scrollableAreaHeight") <= 640) {
+				} else if ($.data(el, "scrollableAreaHeight") <= 640) {
 					startingIndex = 4;
 				} else {
 					startingIndex = 5;
@@ -870,7 +876,7 @@
 
 					tempImg.load(function () {
 						// Is it still smaller? Load next size
-						if (this.height < el.data("scrollableAreaHeight")) {
+						if (this.height < $.data(el, "scrollableAreaHeight")) {
 							// Load a bigger image, if possible
 							if ((sizeIndex + 1) < flickrImageSizes.length) {
 								loadFlickrImage(item, sizeIndex + 1);
@@ -887,15 +893,15 @@
 							switch (manipulationMethod) {
 								case "addFirst":
 									// Add the loaded content first in the scrollable area
-									el.data("scrollableArea").children(":first").before(loadedFlickrImages);
+									$.data(el, "scrollableArea").children(":first").before(loadedFlickrImages);
 									break;
 								case "addLast":
 									// Add the loaded content last in the scrollable area
-									el.data("scrollableArea").children(":last").after(loadedFlickrImages);
+									$.data(el, "scrollableArea").children(":last").after(loadedFlickrImages);
 									break;
 								default:
 									// Replace the content in the scrollable area
-									el.data("scrollableArea").html(loadedFlickrImages);
+									$.data(el, "scrollableArea").html(loadedFlickrImages);
 									break;
 							}
 
@@ -915,7 +921,7 @@
 				// Add the loaded content first or last in the scrollable area
 				function addImageToLoadedImages(imageObj) {
 					// Calculate the scaled width
-					var widthScalingFactor = el.data("scrollableAreaHeight") / imageObj.height;
+					var widthScalingFactor = $.data(el, "scrollableAreaHeight") / imageObj.height;
 					var tempWidth = Math.round(imageObj.width * widthScalingFactor);
 					// Set an id for the image - the filename is used as an id
 					var tempIdArr = $(imageObj).attr("src").split("/");
@@ -923,7 +929,7 @@
 					tempIdArr = tempIdArr[lastElemIndex].split(".");
 					$(imageObj).attr("id", tempIdArr[0]);
 					// Set the height of the image to the height of the scrollable area and add the width
-					$(imageObj).css({ "height": el.data("scrollableAreaHeight"), "width": tempWidth });
+					$(imageObj).css({ "height": $.data(el, "scrollableAreaHeight"), "width": tempWidth });
 					// Add the id of the image to the array of id's - this
 					// is used as a parameter when the callback is triggered
 					imageIdStringBuffer.push(tempIdArr[0]);
@@ -965,15 +971,15 @@
 				switch (manipulationMethod) {
 					case "addFirst":
 						// Add the loaded content first in the scrollable area
-						el.data("scrollableArea").children(":first").before(filteredContent);
+						$.data(el, "scrollableArea").children(":first").before(filteredContent);
 						break;
 					case "addLast":
 						// Add the loaded content last in the scrollable area
-						el.data("scrollableArea").children(":last").after(filteredContent);
+						$.data(el, "scrollableArea").children(":last").after(filteredContent);
 						break;
 					default:
 						// Replace the content in the scrollable area
-						el.data("scrollableArea").html(filteredContent);
+						$.data(el, "scrollableArea").html(filteredContent);
 						break;
 				}
 
@@ -1015,15 +1021,15 @@
 			switch (manipulationMethod) {
 				case "addFirst":
 					// Add the loaded content first in the scrollable area
-					el.data("scrollableArea").children(":first").before(filteredContent);
+					$.data(el, "scrollableArea").children(":first").before(filteredContent);
 					break;
 				case "addLast":
 					// Add the loaded content last in the scrollable area
-					el.data("scrollableArea").children(":last").after(filteredContent);
+					$.data(el, "scrollableArea").children(":last").after(filteredContent);
 					break;
 				default:
 					// Replace the content in the scrollable area
-					el.data("scrollableArea").html(filteredContent);
+					$.data(el, "scrollableArea").html(filteredContent);
 					break;
 			}
 
@@ -1045,10 +1051,10 @@
 			var tempScrollableAreaWidth = 0, foundStartAtElement = false, o = this.options, el = this.element;
 
 			// Add up the total width of all the items inside the scrollable area
-			el.data("scrollableArea").children(o.countOnlyClass).each(function () {
+			$.data(el, "scrollableArea").children(o.countOnlyClass).each(function () {
 				// Check to see if the current element in the loop is the one where the scrolling should start
 				if ((o.startAtElementId.length > 0) && (($(this).attr("id")) === o.startAtElementId)) {
-					el.data("startingPosition", tempScrollableAreaWidth);
+					$.data(el, "startingPosition", tempScrollableAreaWidth);
 					foundStartAtElement = true;
 				}
 				tempScrollableAreaWidth = tempScrollableAreaWidth + $(this).outerWidth(true);
@@ -1058,16 +1064,16 @@
 			// If the element with the ID specified by startAtElementId
 			// is not found, reset it
 			if (!(foundStartAtElement)) {
-				el.data("startAtElementId", "");
+				$.data(el, "startAtElementId", "");
 			}
 
 			// Set the width of the scrollable area
-			el.data("scrollableAreaWidth", tempScrollableAreaWidth);
-			el.data("scrollableArea").width(el.data("scrollableAreaWidth"));
+			$.data(el, "scrollableAreaWidth", tempScrollableAreaWidth);
+			$.data(el, "scrollableArea").width($.data(el, "scrollableAreaWidth"));
 
 			// Move to the starting position
-			el.data("scrollWrapper").scrollLeft(el.data("startingPosition"));
-			el.data("scrollXPos", el.data("startingPosition"));
+			$.data(el, "scrollWrapper").scrollLeft($.data(el, "startingPosition"));
+			$.data(el, "scrollXPos", $.data(el, "startingPosition"));
 		},
 		/**********************************************************
 		Get current scrolling left offset
@@ -1080,7 +1086,7 @@
 			// mode, the offset is not that relevant anymore since
 			// the plugin will swap the elements inside the scroller
 			// around and manipulate the offset in this process.
-			return el.data("scrollWrapper").scrollLeft();
+			return $.data(el, "scrollWrapper").scrollLeft();
 		},
 		/**********************************************************
 		Stopping, starting and doing the auto scrolling
@@ -1088,9 +1094,9 @@
 		stopAutoScrolling: function () {
 			var self = this, el = this.element;
 
-			if (el.data("autoScrollingInterval") !== null) {
-				clearInterval(el.data("autoScrollingInterval"));
-				el.data("autoScrollingInterval", null);
+			if ($.data(el, "autoScrollingInterval") !== null) {
+				clearInterval($.data(el, "autoScrollingInterval"));
+				$.data(el, "autoScrollingInterval", null);
 
 				// Check to see which hotspots should be active
 				// in the position where the scroller has stopped
@@ -1105,72 +1111,72 @@
 		startAutoScrolling: function () {
 			var self = this, el = this.element, o = this.options;
 
-			if (el.data("enabled")) {
+			if ($.data(el, "enabled")) {
 				self._showHideHotSpots();
 
 				// Stop any running interval
-				clearInterval(el.data("autoScrollingInterval"));
-				el.data("autoScrollingInterval", null);
+				clearInterval($.data(el, "autoScrollingInterval"));
+				$.data(el, "autoScrollingInterval", null);
 
 				// Callback
 				self._trigger("autoScrollingStarted");
 
 				// Start interval
-				el.data("autoScrollingInterval", setInterval(function () {
+				$.data(el, "autoScrollingInterval", setInterval(function () {
 
 					// If the scroller is not visible or
 					// if the scrollable area is shorter than the scroll wrapper
 					// any running auto scroll interval should stop.
-					if (!(el.data("visible")) || (el.data("scrollableAreaWidth") <= (el.data("scrollWrapper").innerWidth()))) {
+					if (!($.data(el, "visible")) || ($.data(el, "scrollableAreaWidth") <= ($.data(el, "scrollWrapper").innerWidth()))) {
 						// Stop any running interval
-						clearInterval(el.data("autoScrollingInterval"));
-						el.data("autoScrollingInterval", null);
+						clearInterval($.data(el, "autoScrollingInterval"));
+						$.data(el, "autoScrollingInterval", null);
 
 					}
 					else {
 
 						// Store the old scrollLeft value to see if the scrolling has reached the end
-						el.data("previousScrollLeft", el.data("scrollWrapper").scrollLeft());
+						$.data(el, "previousScrollLeft", $.data(el, "scrollWrapper").scrollLeft());
 
 						switch (o.autoScrollingDirection) {
 							case "right":
 
-								el.data("scrollWrapper").scrollLeft(el.data("scrollWrapper").scrollLeft() + o.autoScrollingStep);
-								if (el.data("previousScrollLeft") === el.data("scrollWrapper").scrollLeft()) {
+								$.data(el, "scrollWrapper").scrollLeft($.data(el, "scrollWrapper").scrollLeft() + o.autoScrollingStep);
+								if ($.data(el, "previousScrollLeft") === $.data(el, "scrollWrapper").scrollLeft()) {
 									self._trigger("autoScrollingRightLimitReached");
-									clearInterval(el.data("autoScrollingInterval"));
-									el.data("autoScrollingInterval", null);
+									clearInterval($.data(el, "autoScrollingInterval"));
+									$.data(el, "autoScrollingInterval", null);
 									self._trigger("autoScrollingIntervalStopped");
 								}
 								break;
 
 							case "left":
-								el.data("scrollWrapper").scrollLeft(el.data("scrollWrapper").scrollLeft() - o.autoScrollingStep);
-								if (el.data("previousScrollLeft") === el.data("scrollWrapper").scrollLeft()) {
+								$.data(el, "scrollWrapper").scrollLeft($.data(el, "scrollWrapper").scrollLeft() - o.autoScrollingStep);
+								if ($.data(el, "previousScrollLeft") === $.data(el, "scrollWrapper").scrollLeft()) {
 									self._trigger("autoScrollingLeftLimitReached");
-									clearInterval(el.data("autoScrollingInterval"));
-									el.data("autoScrollingInterval", null);
+									clearInterval($.data(el, "autoScrollingInterval"));
+									$.data(el, "autoScrollingInterval", null);
 									self._trigger("autoScrollingIntervalStopped");
 								}
 								break;
 
 							case "backAndForth":
-								if (el.data("pingPongDirection") === "right") {
-									el.data("scrollWrapper").scrollLeft(el.data("scrollWrapper").scrollLeft() + (o.autoScrollingStep));
+								if ($.data(el, "pingPongDirection") === "right") {
+									$.data(el, "scrollWrapper").scrollLeft($.data(el, "scrollWrapper").scrollLeft() + (o.autoScrollingStep));
 								}
 								else {
-									el.data("scrollWrapper").scrollLeft(el.data("scrollWrapper").scrollLeft() - (o.autoScrollingStep));
+									$.data(el, "scrollWrapper").scrollLeft($.data(el, "scrollWrapper").scrollLeft() - (o.autoScrollingStep));
 								}
 
 								// If the scrollLeft hasnt't changed it means that the scrolling has reached
 								// the end and the direction should be switched
-								if (el.data("previousScrollLeft") === el.data("scrollWrapper").scrollLeft()) {
-									if (el.data("pingPongDirection") === "right") {
-										el.data("pingPongDirection", "left");
+								if ($.data(el, "previousScrollLeft") === $.data(el, "scrollWrapper").scrollLeft()) {
+									if ($.data(el, "pingPongDirection") === "right") {
+										$.data(el, "pingPongDirection", "left");
 										self._trigger("autoScrollingRightLimitReached");
 									}
 									else {
-										el.data("pingPongDirection", "right");
+										$.data(el, "pingPongDirection", "right");
 										self._trigger("autoScrollingLeftLimitReached");
 									}
 								}
@@ -1179,14 +1185,14 @@
 							case "endlessLoopRight":
 
 								// Do the auto scrolling
-								el.data("scrollWrapper").scrollLeft(el.data("scrollWrapper").scrollLeft() + o.autoScrollingStep);
+								$.data(el, "scrollWrapper").scrollLeft($.data(el, "scrollWrapper").scrollLeft() + o.autoScrollingStep);
 
 								self._checkContinuousSwapRight();
 								break;
 							case "endlessLoopLeft":
 
 								// Do the auto scrolling
-								el.data("scrollWrapper").scrollLeft(el.data("scrollWrapper").scrollLeft() - o.autoScrollingStep);
+								$.data(el, "scrollWrapper").scrollLeft($.data(el, "scrollWrapper").scrollLeft() - o.autoScrollingStep);
 
 								self._checkContinuousSwapLeft();
 								break;
@@ -1208,29 +1214,29 @@
 			// the element swapping should be executed. A true/false variable is used
 			// as a flag variable so the swapAt value doesn't have to be recalculated
 			// in each loop.  
-			if (el.data("getNextElementWidth")) {
+			if ($.data(el, "getNextElementWidth")) {
 
-				if ((o.startAtElementId.length > 0) && (el.data("startAtElementHasNotPassed"))) {
+				if ((o.startAtElementId.length > 0) && ($.data(el, "startAtElementHasNotPassed"))) {
 					// If the user has set a certain element to start at, set swapAt 
 					// to that element width. This happens once.
-					el.data("swapAt", $("#" + o.startAtElementId).outerWidth(true));
-					el.data("startAtElementHasNotPassed", false);
+					$.data(el, "swapAt", $("#" + o.startAtElementId).outerWidth(true));
+					$.data(el, "startAtElementHasNotPassed", false);
 				}
 				else {
 					// Set swapAt to the first element in the scroller
-					el.data("swapAt", el.data("scrollableArea").children(":first").outerWidth(true));
+					$.data(el, "swapAt", $.data(el, "scrollableArea").children(":first").outerWidth(true));
 				}
-				el.data("getNextElementWidth", false);
+				$.data(el, "getNextElementWidth", false);
 			}
 
 
 			// Check to see if the swap should be done
-			if (el.data("swapAt") <= el.data("scrollWrapper").scrollLeft()) {
-				el.data("swappedElement", el.data("scrollableArea").children(":first").detach());
-				el.data("scrollableArea").append(el.data("swappedElement"));
-				var wrapperLeft = el.data("scrollWrapper").scrollLeft();
-				el.data("scrollWrapper").scrollLeft(wrapperLeft - el.data("swappedElement").outerWidth(true));
-				el.data("getNextElementWidth", true);
+			if ($.data(el, "swapAt") <= $.data(el, "scrollWrapper").scrollLeft()) {
+				$.data(el, "swappedElement", $.data(el, "scrollableArea").children(":first").detach());
+				$.data(el, "scrollableArea").append($.data(el, "swappedElement"));
+				var wrapperLeft = $.data(el, "scrollWrapper").scrollLeft();
+				$.data(el, "scrollWrapper").scrollLeft(wrapperLeft - $.data(el, "swappedElement").outerWidth(true));
+				$.data(el, "getNextElementWidth", true);
 			}
 		},
 		/**********************************************************
@@ -1244,25 +1250,25 @@
 			// as a flag variable so the swapAt value doesn't have to be recalculated
 			// in each loop.
 
-			if (el.data("getNextElementWidth")) {
-				if ((o.startAtElementId.length > 0) && (el.data("startAtElementHasNotPassed"))) {
-					el.data("swapAt", $("#" + o.startAtElementId).outerWidth(true));
-					el.data("startAtElementHasNotPassed", false);
+			if ($.data(el, "getNextElementWidth")) {
+				if ((o.startAtElementId.length > 0) && ($.data(el, "startAtElementHasNotPassed"))) {
+					$.data(el, "swapAt", $("#" + o.startAtElementId).outerWidth(true));
+					$.data(el, "startAtElementHasNotPassed", false);
 				}
 				else {
-					el.data("swapAt", el.data("scrollableArea").children(":first").outerWidth(true));
+					$.data(el, "swapAt", $.data(el, "scrollableArea").children(":first").outerWidth(true));
 				}
 
-				el.data("getNextElementWidth", false);
+				$.data(el, "getNextElementWidth", false);
 			}
 
 			// Check to see if the swap should be done
-			if (el.data("scrollWrapper").scrollLeft() === 0) {
+			if ($.data(el, "scrollWrapper").scrollLeft() === 0) {
        
-				el.data("swappedElement", el.data("scrollableArea").children(":last").detach());
-				el.data("scrollableArea").prepend(el.data("swappedElement"));
-				el.data("scrollWrapper").scrollLeft(el.data("scrollWrapper").scrollLeft() + el.data("swappedElement").outerWidth(true));
-				el.data("getNextElementWidth", true);
+				$.data(el, "swappedElement", $.data(el, "scrollableArea").children(":last").detach());
+				$.data(el, "scrollableArea").prepend($.data(el, "swappedElement"));
+				$.data(el, "scrollWrapper").scrollLeft($.data(el, "scrollWrapper").scrollLeft() + $.data(el, "swappedElement").outerWidth(true));
+				$.data(el, "getNextElementWidth", true);
         
 			}
 
@@ -1271,18 +1277,18 @@
 			var self = this, el = this.element;
 
 			// Restore the original content of the scrollable area
-			el.data("scrollableArea").html(el.data("originalElements"));
+			$.data(el, "scrollableArea").html($.data(el, "originalElements"));
 			self.recalculateScrollableArea();
 			self.jumpToElement("first");
 		},
 		show: function () {
 			var el = this.element;
-			el.data("visible", true);
+			$.data(el, "visible", true);
 			el.show();
 		},
 		hide: function () {
 			var el = this.element;
-			el.data("visible", false);
+			$.data(el, "visible", false);
 			el.hide();
 		},
 		enable: function () {
@@ -1290,58 +1296,58 @@
 
 			// Enable touch scrolling
 			if (this.options.touchScrolling) {
-				el.data("scrollWrapper").kinetic('attach');
+				$.data(el, "scrollWrapper").kinetic('attach');
 			}
 
 			// Set enabled to true
-			el.data("enabled", true);
+			$.data(el, "enabled", true);
 		},
 		disable: function () {
 			var self = this, el = this.element;
 
 			// Clear all running intervals
 			self.stopAutoScrolling();
-			clearInterval(el.data("rightScrollingInterval"));
-			clearInterval(el.data("leftScrollingInterval"));
-			clearInterval(el.data("hideHotSpotBackgroundsInterval"));
+			clearInterval($.data(el, "rightScrollingInterval"));
+			clearInterval($.data(el, "leftScrollingInterval"));
+			clearInterval($.data(el, "hideHotSpotBackgroundsInterval"));
 
 			// Disable touch scrolling
 			if (this.options.touchScrolling) {
-				el.data("scrollWrapper").kinetic('detach');
+				$.data(el, "scrollWrapper").kinetic('detach');
 			}
 
 			// Set enabled to false
-			el.data("enabled", false);
+			$.data(el, "enabled", false);
 		},
 		destroy: function () {
 			var self = this, el = this.element;
 
 			// Clear all running intervals
 			self.stopAutoScrolling();
-			clearInterval(el.data("rightScrollingInterval"));
-			clearInterval(el.data("leftScrollingInterval"));
-			clearInterval(el.data("hideHotSpotBackgroundsInterval"));
+			clearInterval($.data(el, "rightScrollingInterval"));
+			clearInterval($.data(el, "leftScrollingInterval"));
+			clearInterval($.data(el, "hideHotSpotBackgroundsInterval"));
 
 			// Remove all element specific events
-			el.data("scrollingHotSpotRight").unbind("mouseover");
-			el.data("scrollingHotSpotRight").unbind("mouseout");
-			el.data("scrollingHotSpotRight").unbind("mousedown");
+			$.data(el, "scrollingHotSpotRight").unbind("mouseover");
+			$.data(el, "scrollingHotSpotRight").unbind("mouseout");
+			$.data(el, "scrollingHotSpotRight").unbind("mousedown");
 
-			el.data("scrollingHotSpotLeft").unbind("mouseover");
-			el.data("scrollingHotSpotLeft").unbind("mouseout");
-			el.data("scrollingHotSpotLeft").unbind("mousedown");
+			$.data(el, "scrollingHotSpotLeft").unbind("mouseover");
+			$.data(el, "scrollingHotSpotLeft").unbind("mouseout");
+			$.data(el, "scrollingHotSpotLeft").unbind("mousedown");
 
 			el.unbind("mousenter");
 			el.unbind("mouseleave");
 
 			// Remove all elements created by the plugin
-			el.data("scrollingHotSpotRight").remove();
-			el.data("scrollingHotSpotLeft").remove();
-			el.data("scrollableArea").remove();
-			el.data("scrollWrapper").remove();
+			$.data(el, "scrollingHotSpotRight").remove();
+			$.data(el, "scrollingHotSpotLeft").remove();
+			$.data(el, "scrollableArea").remove();
+			$.data(el, "scrollWrapper").remove();
 
 			// Restore the original content of the scrollable area
-			el.html(el.data("originalElements"));
+			el.html($.data(el, "originalElements"));
 
 			// Call the base destroy function
 			$.Widget.prototype.destroy.apply(this, arguments);
