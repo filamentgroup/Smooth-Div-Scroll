@@ -306,7 +306,10 @@
 
 					$.data(el, "leftScrollingInterval", setInterval(function () {
 						if ($.data(el, "scrollXPos") > 0 && $.data(el, "enabled")) {
-							$.data(el, "scrollWrapper").scrollableAreaMarginLeft($.data(el, "scrollWrapper").scrollableAreaMarginLeft() - ($.data(el, "scrollXPos") * $.data(el, "speedBooster")));
+							var newOffset = $.data(el, "scrollWrapper").scrollableAreaMarginLeft() - ($.data(el, "scrollXPos") * $.data(el, "speedBooster"));
+
+							$.data(el, "scrollWrapper")
+								.scrollableAreaMarginLeft( newOffset <= 0 ? 0 : newOffset );
 
 							if (o.manualContinuousScrolling) {
 								self._checkContinuousSwapLeft();
