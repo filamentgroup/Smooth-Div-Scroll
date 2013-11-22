@@ -1271,8 +1271,7 @@
 			}
 
 			// Check to see if the swap should be done
-			if ($.data(el, "scrollWrapper").scrollableAreaMarginLeft() === 0) {
-
+			if ($.data(el, "scrollWrapper").scrollableAreaMarginLeft() <= 0) {
 				$.data(el, "swappedElement", $.data(el, "scrollableArea").children(":last").detach());
 				$.data(el, "scrollableArea").prepend($.data(el, "swappedElement"));
 				$.data(el, "scrollWrapper").scrollableAreaMarginLeft($.data(el, "scrollWrapper").scrollableAreaMarginLeft() + $.data(el, "swappedElement").outerWidth(true));
