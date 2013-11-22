@@ -83,7 +83,13 @@
 		$(document).ready(function () {
 			// None of the options are set
 			$("div#makeMeScrollable").smoothDivScroll({
-				autoScrollingMode: "onStart"
+				autoScrollingMode: 'always',
+				autoScrollingDirection: 'endlessLoopRight',
+				autoScrollingStep: 1,
+				autoScrollingInterval: 10,
+				touchScrolling: true,
+				hotSpotScrolling: false,
+				useMarginLeft: true
 			});
 		});
 	</script>
