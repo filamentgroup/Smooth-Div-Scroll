@@ -192,6 +192,24 @@
 			if (o.touchScrolling && $.data(el, "enabled")) {
 				// Use jquery.kinetic.js for touch scrolling
 				// Vertical scrolling disabled
+				$.data(el, "scrollWrapper")
+					.bind( "ontouchstart" in window ? "touchstart" : "mousedown", function() {
+						var offset, scrollWrapper = $.data(el, "scrollWrapper");
+
+						offset = scrollWrapper.scrollingOffset();
+
+						if( o.useMarginLeft && offset > 0 ){
+							scrollWrapper.scrollLeft(offset);
+							scrollWrapper.scrollingOffset( 0 );
+						}
+
+						// Stop any ongoing animations
+						$.data(el, "scrollWrapper").stop(true, false);
+
+						// Stop any ongoing auto scrolling
+						self.stopAutoScrolling();
+					});
+
 				$.data(el, "scrollWrapper").kinetic({
 					y: false,
 					moved: function (settings) {
