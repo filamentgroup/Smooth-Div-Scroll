@@ -27,6 +27,15 @@
  *
  */
 (function ($) {
+	$.fn.scrollableAreaMarginLeft = function( val ) {
+		var $element = this.eq(0);
+
+		if( val === undefined ){
+			return -(parseInt($element.find(".scrollableArea").css( "margin-left" ).replace("px", ""), 10));
+		} else {
+			$element.find(".scrollableArea").css( "margin-left", -val );
+		}
+	};
 
 	$.widget("thomaskahn.smoothDivScroll", {
 		// Default options
@@ -83,7 +92,7 @@
 		_create: function () {
 			var self = this, o = this.options, el = this.element;
 
-			// Create variables for any existing or not existing 
+			// Create variables for any existing or not existing
 			// scroller elements on the page.
 			$.data(el, {
 				"scrollWrapper": el.find("." + o.scrollWrapperClass),
@@ -92,7 +101,7 @@
 				"scrollableArea": el.find("." + o.scrollableAreaClass)
 			});
 
-			// Check which elements are already present on the page. 
+			// Check which elements are already present on the page.
 			// Create any elements needed by the plugin if
 			// the user hasn't already created them.
 
@@ -177,13 +186,13 @@
 					y: false,
 					moved: function (settings) {
 						if (o.manualContinuousScrolling) {
-							if ($.data(el, "scrollWrapper").scrollLeft() <= 0) {
+							if ($.data(el, "scrollWrapper").scrollableAreaMarginLeft() <= 0) {
 								self._checkContinuousSwapLeft();
 							} else {
 								self._checkContinuousSwapRight();
 							}
 						}
-						
+
 						// Callback
 						self._trigger("touchMoved");
 					},
@@ -193,7 +202,7 @@
 
 						// Stop any ongoing auto scrolling
 						self.stopAutoScrolling();
-						
+
 						// Callback
 						self._trigger("touchStopped");
 					}
@@ -203,7 +212,7 @@
 			/*****************************************
 			SET UP EVENTS FOR SCROLLING RIGHT
 			*****************************************/
-			// Check the mouse X position and calculate 
+			// Check the mouse X position and calculate
 			// the relative X position inside the right hotspot
 			$.data(el, "scrollingHotSpotRight").bind("mousemove", function (e) {
 				if (o.hotSpotScrolling) {
@@ -229,7 +238,7 @@
 					// Start the scrolling interval
 					$.data(el, "rightScrollingInterval", setInterval(function () {
 						if ($.data(el, "scrollXPos") > 0 && $.data(el, "enabled")) {
-							$.data(el, "scrollWrapper").scrollLeft($.data(el, "scrollWrapper").scrollLeft() + ($.data(el, "scrollXPos") * $.data(el, "speedBooster")));
+							$.data(el, "scrollWrapper").scrollableAreaMarginLeft($.data(el, "scrollWrapper").scrollableAreaMarginLeft() + ($.data(el, "scrollXPos") * $.data(el, "speedBooster")));
 
 							if (o.manualContinuousScrolling) {
 								self._checkContinuousSwapRight();
@@ -252,7 +261,7 @@
 
 					// Easing out after scrolling
 					if (o.easingAfterHotSpotScrolling && $.data(el, "enabled")) {
-						$.data(el, "scrollWrapper").animate({ scrollLeft: $.data(el, "scrollWrapper").scrollLeft() + o.easingAfterHotSpotScrollingDistance }, { duration: o.easingAfterHotSpotScrollingDuration, easing: o.easingAfterHotSpotScrollingFunction });
+						$.data(el, "scrollWrapper").animate({ scrollLeft: $.data(el, "scrollWrapper").scrollableAreaMarginLeft() + o.easingAfterHotSpotScrollingDistance }, { duration: o.easingAfterHotSpotScrollingDuration, easing: o.easingAfterHotSpotScrollingFunction });
 					}
 				}
 			});
@@ -297,7 +306,7 @@
 
 					$.data(el, "leftScrollingInterval", setInterval(function () {
 						if ($.data(el, "scrollXPos") > 0 && $.data(el, "enabled")) {
-							$.data(el, "scrollWrapper").scrollLeft($.data(el, "scrollWrapper").scrollLeft() - ($.data(el, "scrollXPos") * $.data(el, "speedBooster")));
+							$.data(el, "scrollWrapper").scrollableAreaMarginLeft($.data(el, "scrollWrapper").scrollableAreaMarginLeft() - ($.data(el, "scrollXPos") * $.data(el, "speedBooster")));
 
 							if (o.manualContinuousScrolling) {
 								self._checkContinuousSwapLeft();
@@ -320,7 +329,7 @@
 
 					// Easing out after scrolling
 					if (o.easingAfterHotSpotScrolling && $.data(el, "enabled")) {
-						$.data(el, "scrollWrapper").animate({ scrollLeft: $.data(el, "scrollWrapper").scrollLeft() - o.easingAfterHotSpotScrollingDistance }, { duration: o.easingAfterHotSpotScrollingDuration, easing: o.easingAfterHotSpotScrollingFunction });
+						$.data(el, "scrollWrapper").animate({ scrollLeft: $.data(el, "scrollWrapper").scrollableAreaMarginLeft() - o.easingAfterHotSpotScrollingDistance }, { duration: o.easingAfterHotSpotScrollingDuration, easing: o.easingAfterHotSpotScrollingFunction });
 					}
 				}
 			});
@@ -339,7 +348,7 @@
 					var pixels;
 
 					// Can be either positive or negative
-					// Is multiplied/inverted by minus one since you want it to scroll 
+					// Is multiplied/inverted by minus one since you want it to scroll
 					// left when moving the wheel down/right and right when moving the wheel up/left
 					if (o.mousewheelScrolling === "vertical" && deltaY !== 0) {
 						// Stop any ongoing auto scrolling if it's running
@@ -384,7 +393,7 @@
 			/*****************************************
 			FETCHING CONTENT ON INITIALIZATION
 			*****************************************/
-			// If getContentOnLoad is present in the options, 
+			// If getContentOnLoad is present in the options,
 			// sort out the method and parameters and get the content
 
 			if (!(jQuery.isEmptyObject(o.getContentOnLoad))) {
@@ -401,8 +410,8 @@
 			*****************************************/
 			// The $(window).load event handler is used because the width of the elements are not calculated
 			// properly until then, at least not in Google Chrome. The start of the auto scrolling and the
-			// setting of the hotspot backgrounds is started here as well for the same reason. 
-			// If the auto scrolling is not started in $(window).load, it won't start because it 
+			// setting of the hotspot backgrounds is started here as well for the same reason.
+			// If the auto scrolling is not started in $(window).load, it won't start because it
 			// will interpret the scrollable areas as too short.
 			$(window).load(function () {
 
@@ -416,7 +425,7 @@
 					self.startAutoScrolling();
 				}
 
-				// If the user wants to have visible hotspot backgrounds, 
+				// If the user wants to have visible hotspot backgrounds,
 				// here is where it's taken care of
 				if (o.autoScrollingMode !== "always") {
 
@@ -573,7 +582,7 @@
 					}
 					// When you can't scroll further left the left scroll hotspot should be hidden
 					// and the right hotspot visible.
-					else if ($.data(el, "scrollWrapper").scrollLeft() === 0) {
+					else if ($.data(el, "scrollWrapper").scrollableAreaMarginLeft() === 0) {
 						$.data(el, "scrollingHotSpotLeft").hide();
 						$.data(el, "scrollingHotSpotRight").show();
 						// Callback
@@ -585,7 +594,7 @@
 					// When you can't scroll further right
 					// the right scroll hotspot should be hidden
 					// and the left hotspot visible
-					else if ($.data(el, "scrollableAreaWidth") <= ($.data(el, "scrollWrapper").innerWidth() + $.data(el, "scrollWrapper").scrollLeft())) {
+					else if ($.data(el, "scrollableAreaWidth") <= ($.data(el, "scrollWrapper").innerWidth() + $.data(el, "scrollWrapper").scrollableAreaMarginLeft())) {
 						$.data(el, "scrollingHotSpotLeft").show();
 						$.data(el, "scrollingHotSpotRight").hide();
 						// Callback
@@ -620,7 +629,7 @@
 					$.data(el, "scrollXPos", 0);
 					return true;
 				case "start":
-					// Check to see if there is a specified start element in the options 
+					// Check to see if there is a specified start element in the options
 					// and that the element exists in the DOM
 					if (o.startAtElementId !== "") {
 						if ($.data(el, "scrollableArea").has("#" + o.startAtElementId)) {
@@ -668,7 +677,7 @@
 				// Get the position of the element to scroll to
 				if (self._setElementScrollPosition(jumpTo, element)) {
 					// Jump to the element
-					$.data(el, "scrollWrapper").scrollLeft($.data(el, "scrollXPos"));
+					$.data(el, "scrollWrapper").scrollableAreaMarginLeft($.data(el, "scrollXPos"));
 					// Check the hotspots
 					self._showHideHotSpots();
 					// Trigger the right callback
@@ -757,43 +766,43 @@
 			$.data(el, "scrollWrapper").stop(true, true);
 
 			// Only run this code if it's possible to scroll left or right,
-			if ((pixels < 0 && $.data(el, "scrollWrapper").scrollLeft() > 0) || (pixels > 0 && $.data(el, "scrollableAreaWidth") > ($.data(el, "scrollWrapper").innerWidth() + $.data(el, "scrollWrapper").scrollLeft())) || o.manualContinuousScrolling ) {
+			if ((pixels < 0 && $.data(el, "scrollWrapper").scrollableAreaMarginLeft() > 0) || (pixels > 0 && $.data(el, "scrollableAreaWidth") > ($.data(el, "scrollWrapper").innerWidth() + $.data(el, "scrollWrapper").scrollableAreaMarginLeft())) || o.manualContinuousScrolling ) {
 
         var scrollLength = $.data(el, "scrollableArea").width() - $.data(el, "scrollWrapper").width();
-        var sOffset = $.data(el, "scrollWrapper").scrollLeft() + pixels;
+        var sOffset = $.data(el, "scrollWrapper").scrollableAreaMarginLeft() + pixels;
 
         if( sOffset < 0 ) { // Swap last element to be the first one if scroll out of the left edge of view
-                
+
             function forceSwapElementLeft(){
               $.data(el, "swappedElement", $.data(el, "scrollableArea").children(":last").detach());
               $.data(el, "scrollableArea").prepend($.data(el, "swappedElement"));
-              $.data(el, "scrollWrapper").scrollLeft($.data(el, "scrollWrapper").scrollLeft() + $.data(el, "swappedElement").outerWidth(true));              
+              $.data(el, "scrollWrapper").scrollableAreaMarginLeft($.data(el, "scrollWrapper").scrollableAreaMarginLeft() + $.data(el, "swappedElement").outerWidth(true));
             }
-            
+
             while(sOffset < 0 ){ // keep swap elements left until it has enough length for scrolling left
               forceSwapElementLeft();
-              sOffset = $.data(el, "scrollableArea").children(":first").outerWidth(true) + sOffset;                   
+              sOffset = $.data(el, "scrollableArea").children(":first").outerWidth(true) + sOffset;
             }
 
         } else if( sOffset - scrollLength > 0 ){ // Swap the first element to be the last one if scroll out of the right edge of view
-           
-          function forceSwapElementRight(){            
+
+          function forceSwapElementRight(){
             $.data(el, "swappedElement", $.data(el, "scrollableArea").children(":first").detach());
             $.data(el, "scrollableArea").append($.data(el, "swappedElement"));
-            var wrapperLeft = $.data(el, "scrollWrapper").scrollLeft();
-            $.data(el, "scrollWrapper").scrollLeft(wrapperLeft - $.data(el, "swappedElement").outerWidth(true));            
+            var wrapperLeft = $.data(el, "scrollWrapper").scrollableAreaMarginLeft();
+            $.data(el, "scrollWrapper").scrollableAreaMarginLeft(wrapperLeft - $.data(el, "swappedElement").outerWidth(true));
           }
-          
+
           while( sOffset - scrollLength > 0 ){ // keep swap elements right until it has enough length for scrolling right
             forceSwapElementRight();
-            sOffset = sOffset - $.data(el, "scrollableArea").children(":last").outerWidth(true);              
+            sOffset = sOffset - $.data(el, "scrollableArea").children(":last").outerWidth(true);
           }
-          
+
         }
-          
+
 				if (o.easingAfterMouseWheelScrolling) {
-        
-          $.data(el, "scrollWrapper").animate({ scrollLeft: $.data(el, "scrollWrapper").scrollLeft() + pixels }, { duration: o.easingAfterMouseWheelScrollingDuration, easing: o.easingAfterMouseWheelFunction, complete: function () {
+
+          $.data(el, "scrollWrapper").animate({ scrollLeft: $.data(el, "scrollWrapper").scrollableAreaMarginLeft() + pixels }, { duration: o.easingAfterMouseWheelScrollingDuration, easing: o.easingAfterMouseWheelFunction, complete: function () {
             self._showHideHotSpots();
             if (o.manualContinuousScrolling) {
               if (pixels > 0) {
@@ -804,9 +813,9 @@
             }
           }
           });
-          
+
 				} else {
-					$.data(el, "scrollWrapper").scrollLeft($.data(el, "scrollWrapper").scrollLeft() + pixels);
+					$.data(el, "scrollWrapper").scrollableAreaMarginLeft($.data(el, "scrollWrapper").scrollableAreaMarginLeft() + pixels);
 					self._showHideHotSpots();
 
 					if (o.manualContinuousScrolling) {
@@ -817,7 +826,7 @@
 						}
 					}
 				}
-         
+
 
 			}
 
@@ -1035,7 +1044,7 @@
 
 			// Recalculate the total width of the elements inside the scrollable area
 			self.recalculateScrollableArea();
-	
+
 			// Determine which hotspots to show
 			self._showHideHotSpots();
 
@@ -1072,7 +1081,7 @@
 			$.data(el, "scrollableArea").width($.data(el, "scrollableAreaWidth"));
 
 			// Move to the starting position
-			$.data(el, "scrollWrapper").scrollLeft($.data(el, "startingPosition"));
+			$.data(el, "scrollWrapper").scrollableAreaMarginLeft($.data(el, "startingPosition"));
 			$.data(el, "scrollXPos", $.data(el, "startingPosition"));
 		},
 		/**********************************************************
@@ -1086,7 +1095,7 @@
 			// mode, the offset is not that relevant anymore since
 			// the plugin will swap the elements inside the scroller
 			// around and manipulate the offset in this process.
-			return $.data(el, "scrollWrapper").scrollLeft();
+			return $.data(el, "scrollWrapper").scrollableAreaMarginLeft();
 		},
 		/**********************************************************
 		Stopping, starting and doing the auto scrolling
@@ -1136,13 +1145,13 @@
 					else {
 
 						// Store the old scrollLeft value to see if the scrolling has reached the end
-						$.data(el, "previousScrollLeft", $.data(el, "scrollWrapper").scrollLeft());
+						$.data(el, "previousScrollLeft", $.data(el, "scrollWrapper").scrollableAreaMarginLeft());
 
 						switch (o.autoScrollingDirection) {
 							case "right":
 
-								$.data(el, "scrollWrapper").scrollLeft($.data(el, "scrollWrapper").scrollLeft() + o.autoScrollingStep);
-								if ($.data(el, "previousScrollLeft") === $.data(el, "scrollWrapper").scrollLeft()) {
+								$.data(el, "scrollWrapper").scrollableAreaMarginLeft($.data(el, "scrollWrapper").scrollableAreaMarginLeft() + o.autoScrollingStep);
+								if ($.data(el, "previousScrollLeft") === $.data(el, "scrollWrapper").scrollableAreaMarginLeft()) {
 									self._trigger("autoScrollingRightLimitReached");
 									clearInterval($.data(el, "autoScrollingInterval"));
 									$.data(el, "autoScrollingInterval", null);
@@ -1151,8 +1160,8 @@
 								break;
 
 							case "left":
-								$.data(el, "scrollWrapper").scrollLeft($.data(el, "scrollWrapper").scrollLeft() - o.autoScrollingStep);
-								if ($.data(el, "previousScrollLeft") === $.data(el, "scrollWrapper").scrollLeft()) {
+								$.data(el, "scrollWrapper").scrollableAreaMarginLeft($.data(el, "scrollWrapper").scrollableAreaMarginLeft() - o.autoScrollingStep);
+								if ($.data(el, "previousScrollLeft") === $.data(el, "scrollWrapper").scrollableAreaMarginLeft()) {
 									self._trigger("autoScrollingLeftLimitReached");
 									clearInterval($.data(el, "autoScrollingInterval"));
 									$.data(el, "autoScrollingInterval", null);
@@ -1162,15 +1171,15 @@
 
 							case "backAndForth":
 								if ($.data(el, "pingPongDirection") === "right") {
-									$.data(el, "scrollWrapper").scrollLeft($.data(el, "scrollWrapper").scrollLeft() + (o.autoScrollingStep));
+									$.data(el, "scrollWrapper").scrollableAreaMarginLeft($.data(el, "scrollWrapper").scrollableAreaMarginLeft() + (o.autoScrollingStep));
 								}
 								else {
-									$.data(el, "scrollWrapper").scrollLeft($.data(el, "scrollWrapper").scrollLeft() - (o.autoScrollingStep));
+									$.data(el, "scrollWrapper").scrollableAreaMarginLeft($.data(el, "scrollWrapper").scrollableAreaMarginLeft() - (o.autoScrollingStep));
 								}
 
 								// If the scrollLeft hasnt't changed it means that the scrolling has reached
 								// the end and the direction should be switched
-								if ($.data(el, "previousScrollLeft") === $.data(el, "scrollWrapper").scrollLeft()) {
+								if ($.data(el, "previousScrollLeft") === $.data(el, "scrollWrapper").scrollableAreaMarginLeft()) {
 									if ($.data(el, "pingPongDirection") === "right") {
 										$.data(el, "pingPongDirection", "left");
 										self._trigger("autoScrollingRightLimitReached");
@@ -1185,14 +1194,14 @@
 							case "endlessLoopRight":
 
 								// Do the auto scrolling
-								$.data(el, "scrollWrapper").scrollLeft($.data(el, "scrollWrapper").scrollLeft() + o.autoScrollingStep);
+								$.data(el, "scrollWrapper").scrollableAreaMarginLeft($.data(el, "scrollWrapper").scrollableAreaMarginLeft() + o.autoScrollingStep);
 
 								self._checkContinuousSwapRight();
 								break;
 							case "endlessLoopLeft":
 
 								// Do the auto scrolling
-								$.data(el, "scrollWrapper").scrollLeft($.data(el, "scrollWrapper").scrollLeft() - o.autoScrollingStep);
+								$.data(el, "scrollWrapper").scrollableAreaMarginLeft($.data(el, "scrollWrapper").scrollableAreaMarginLeft() - o.autoScrollingStep);
 
 								self._checkContinuousSwapLeft();
 								break;
@@ -1213,11 +1222,11 @@
 			// Get the width of the first element. When it has scrolled out of view,
 			// the element swapping should be executed. A true/false variable is used
 			// as a flag variable so the swapAt value doesn't have to be recalculated
-			// in each loop.  
+			// in each loop.
 			if ($.data(el, "getNextElementWidth")) {
 
 				if ((o.startAtElementId.length > 0) && ($.data(el, "startAtElementHasNotPassed"))) {
-					// If the user has set a certain element to start at, set swapAt 
+					// If the user has set a certain element to start at, set swapAt
 					// to that element width. This happens once.
 					$.data(el, "swapAt", $("#" + o.startAtElementId).outerWidth(true));
 					$.data(el, "startAtElementHasNotPassed", false);
@@ -1229,13 +1238,12 @@
 				$.data(el, "getNextElementWidth", false);
 			}
 
-
 			// Check to see if the swap should be done
-			if ($.data(el, "swapAt") <= $.data(el, "scrollWrapper").scrollLeft()) {
+			if ($.data(el, "swapAt") <= $.data(el, "scrollWrapper").scrollableAreaMarginLeft()) {
 				$.data(el, "swappedElement", $.data(el, "scrollableArea").children(":first").detach());
 				$.data(el, "scrollableArea").append($.data(el, "swappedElement"));
-				var wrapperLeft = $.data(el, "scrollWrapper").scrollLeft();
-				$.data(el, "scrollWrapper").scrollLeft(wrapperLeft - $.data(el, "swappedElement").outerWidth(true));
+				var wrapperLeft = $.data(el, "scrollWrapper").scrollableAreaMarginLeft();
+				$.data(el, "scrollWrapper").scrollableAreaMarginLeft(wrapperLeft - $.data(el, "swappedElement").outerWidth(true));
 				$.data(el, "getNextElementWidth", true);
 			}
 		},
@@ -1263,13 +1271,13 @@
 			}
 
 			// Check to see if the swap should be done
-			if ($.data(el, "scrollWrapper").scrollLeft() === 0) {
-       
+			if ($.data(el, "scrollWrapper").scrollableAreaMarginLeft() === 0) {
+
 				$.data(el, "swappedElement", $.data(el, "scrollableArea").children(":last").detach());
 				$.data(el, "scrollableArea").prepend($.data(el, "swappedElement"));
-				$.data(el, "scrollWrapper").scrollLeft($.data(el, "scrollWrapper").scrollLeft() + $.data(el, "swappedElement").outerWidth(true));
+				$.data(el, "scrollWrapper").scrollableAreaMarginLeft($.data(el, "scrollWrapper").scrollableAreaMarginLeft() + $.data(el, "swappedElement").outerWidth(true));
 				$.data(el, "getNextElementWidth", true);
-        
+
 			}
 
 		},
