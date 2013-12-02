@@ -436,6 +436,12 @@
 				self.hide();
 			}
 
+			if( this.options.useMarginLeft ) {
+				$.fn.scrollingOffset = scrollableAreaMarginLeft;
+			} else {
+				$.fn.scrollingOffset = scrollWrapperScrollLeft;
+			}
+
 			/*****************************************
 			AUTOSCROLLING
 			*****************************************/
@@ -444,7 +450,7 @@
 			// setting of the hotspot backgrounds is started here as well for the same reason.
 			// If the auto scrolling is not started in $(window).load, it won't start because it
 			// will interpret the scrollable areas as too short.
-			$(window).load(function () {
+			$(window).ready(function () {
 
 				// If scroller is not hidden, recalculate the scrollable area
 				if (!(o.hiddenOnStart)) {
@@ -493,12 +499,6 @@
 				self._trigger("setupComplete");
 
 			});
-
-			if( this.options.useMarginLeft ) {
-				$.fn.scrollingOffset = scrollableAreaMarginLeft;
-			} else {
-				$.fn.scrollingOffset = scrollWrapperScrollLeft;
-			}
 		},
 		/**********************************************************
 		Override _setOption and handle altered options
